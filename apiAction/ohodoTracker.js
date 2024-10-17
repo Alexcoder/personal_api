@@ -53,7 +53,7 @@ export const getOhodoTracker = async(req, res) =>{
 };
 
 
-export async function getOhodoTrackerById(req, res){  
+export async function getOhodoTrackerByID(req, res){  
    const { ohodoTrackerID, } = req.params ;
   try {
       const ohodoTracker = await OhodoTracker.findById(ohodoTrackerID);
