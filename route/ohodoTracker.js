@@ -1,20 +1,20 @@
 import express from "express";
 import {
-     getHSEReports,
-     getHSEReportById, 
-     getHSEReportByCategory,
-     createHSEReport,
-     updateHSEReport,
-     deleteHSEReport
+     getOhodoTrackerReports,
+     getOhodoTrackerReportById, 
+     getOhodoTrackerReportByCategory,
+     createOhodoTrackerReport,
+     updateOhodoTrackerReport,
+     deleteOhodoTrackerReport
     } from "../apiAction/ohodoTracker.js";
 
 const router = express.Router();
 
-router.post( `/`, createHSEReport );
-router.get( `/` , getHSEReports );
-router.get( `/find/:HSEId/:comHSEId`, getHSEReportById );
-router.put( `/update/:HSEId`, updateHSEReport );
-// router.patch( `/reply/:idMainHSE`, "replyHSE" );
-router.delete( `/delete/:HSEId`, deleteHSEReport );
+router.post( `/`, createOhodoTrackerReport );
+router.get( `/` , getOhodoTrackerReports );
+router.get( `/find/:ohodoTrackerID`, getOhodoTrackerReportByID );
+router.put( `/update/:ohodoTrackerID`, updateOhodoTrackerReport );
+// router.patch( `/reply/:idMainOhodoTracker`, "replyOhodoTracker" );
+router.delete( `/delete/:ohodoTrackerID`, deleteOhodoTrackerReport );
 
 export default router;

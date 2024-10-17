@@ -1,4 +1,4 @@
-import { StopCard,  } from "../model/ohodoTracker.js";
+import { OhodoTracker,  } from "../model/ohodoTracker.js";
 // import { io } from "../index.js";
 import dotenv from "dotenv";
 import { v2 as cloudinary } from "cloudinary"; 
@@ -12,53 +12,52 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-export const createHSEReport = async (req, res) =>{
-  // console.log("newHSE" , req.body)
-  if(!req.body.post){
-    return res.status(400).json("Please enter HSE detail")
-  }
+export const createOhodoTracker = async(req, res) =>{
+  console.log("newOhodoTracker" , req?.body)
+  const newHouseTrackerReport = {
+    buildingStage : req.body.buildingStage,
+    itemRequired  : req.body.itemRequired,
+    itemQuantity  : req.body.itemQuantity,
+    amount        : req.body.amount,
+  };
   try {
-      const newHSEReport = new StopCard({
-        observerName        : req.bod.observerName,
-        segment             : req.body.segment,
-        observationDate     : req.body.observationDate,
-        siteName            : req.body.siteName,
-        observationTime     : req.body.observationTime,
-        contractorName      : req.body.contractorName,
-        observationDuration : req.body.observationDuration,
-        clientName          : req.body.clientName,
-      });
-     const createHSEReport = await newHSEReport.save();
-     res.status(200).json(createHSEReport); 
+    const created = await new OhodoTracker(newHouseTrackerReport).save();
+     res.status(200).json(created); 
     } catch (err) {
         res.status(400).json(err)
     }   
 };
 
-export const getHSEReports = async(req, res) =>{
-  const { page } = req.query  ;
+export const getOhodoTracker = async(req, res) =>{
+   try{
+        const data = await OhodoTracker.find()
+        res.status(200).json(data)
+   }catch(err){
+    res.status(400).json(err)
+   }
+  // const { page } = req.query  ;
   // console.log("page", page)
-  const LIMIT = 10 ;
-  const startIndex = ( Number(page)-1 ) * LIMIT;
-  try {
-      const totalStopCards = await StopCard.countDocuments({})
-      const stopCards = await StopCard.find().sort({_id : -1}).limit(LIMIT).skip(startIndex);
-      res.status(200).json({
-        data: stopCards ,
-        currentPage : Number(page),
-        numberOfPages: Math.ceil( totalStopCards / LIMIT ),
-      });
-    } catch (err) {
-      res.status(400).json(err)
-    }   
+  // const LIMIT = 10 ;
+  // const startIndex = ( Number(page)-1 ) * LIMIT;
+  // try {
+  //     const totalEquipment = await OhodoTracker.countDocuments({})
+  //     const equipment = await OhodoTracker.find().sort({_id : -1}).limit(LIMIT).skip(startIndex);
+  //     res.status(200).json({
+  //       data: equipment ,
+  //       currentPage : Number(page),
+  //       numberOfPages: Math.ceil( totalEquipment / LIMIT ),
+  //     });
+  //   } catch (err) {
+  //     res.status(400).json(err)
+  //   }   
 };
 
 
-export async function getHSEReportById(req, res){  
-   const { stopCardId, } = req.params ;
+export async function getOhodoTrackerById(req, res){  
+   const { ohodoTrackerID, } = req.params ;
   try {
-      const stopCard = await StopCard.findById(stopCardId);
-      res.status(200).json({ stopCard })
+      const ohodoTracker = await OhodoTracker.findById(ohodoTrackerID);
+      res.status(200).json({ ohodoTracker })
     } catch (err) {
       res.status(400).json(err)
     }   
@@ -67,10 +66,10 @@ export async function getHSEReportById(req, res){
 
 
   
-  export const getHSEReportByCategory = async(req, res)=>{    
+  export const getOhodoTrackerByCategory = async(req, res)=>{    
     const searchQuery = new RegExp(req.body.category, "i")
     try {
-      const data = await StopCard.find({ category : searchQuery});
+      const data = await OhodoTracker.find({ category : searchQuery});
       io.emit("postByCategory", data)
       res.status(200).json(data)
     } catch (err) {
@@ -80,18 +79,18 @@ export async function getHSEReportById(req, res){
   
 
  
-  export const updateHSEReport = async (req, res) =>{    
+  export const updateOhodoTracker = async (req, res) =>{    
     try {
-      const updated = await StopCard.findByIdAndUpdate(req.params.stopCardId, { $set : req.body }, { new : true });
+      const updated = await OhodoTracker.findByIdAndUpdate(req.params.houseTrackerID, { $set : req.body }, { new : true });
       res.status(200).json(updated)
     } catch (err) {
       res.status(400).json(err)
     }   
   };
   
-  export const deleteHSEReport = async(req, res) =>{   
+  export const deleteOhodoTracker = async(req, res) =>{ 
     try {
-     const removePost = await StopCard.findByIdAndDelete(req.params.stopCardId);
+      await OhodoTracker.findByIdAndDelete(req?.params.ohodoTrackerID);
       res.status(200).json("Post deleted")
     } catch (err) {
         res.status(400).json(err)

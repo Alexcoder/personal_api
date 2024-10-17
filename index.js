@@ -6,8 +6,8 @@ import dotenv from "dotenv";
 // import { Server } from "socket.io";
 // import {createServer} from "http";
 
-import hseRoute from "./route/ohodoTracker.js";
-import equipmentRoute from "./route/houseTracker.js";
+import ohodoRoute from "./route/ohodoTracker.js";
+import houseTrackerRoute from "./route/houseTracker.js";
 
 // https://personal-api-amc2.onrender.com
 
@@ -19,8 +19,8 @@ app.use(bodyParser.json({limit:"30mb", extended: true}));
 app.use(bodyParser.urlencoded({limit:"30mb", extended:true}));
 
 //ROUTES
-app.use("/api/ohodoTracker", hseRoute);
-app.use("/api/houseTracker", equipmentRoute);
+app.use("/api/ohodoTracker", ohodoRoute);
+app.use("/api/houseTracker", houseTrackerRoute);
 
 const PORT = process.env.PORT || 8000;
 
