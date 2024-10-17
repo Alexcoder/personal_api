@@ -6,7 +6,7 @@ import {
      createHSEReport,
      updateHSEReport,
      deleteHSEReport
-    } from "../apiAction/hse.js";
+    } from "../apiAction/ohodoTracker.js";
 
 const router = express.Router();
 
