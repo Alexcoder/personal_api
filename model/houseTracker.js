@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 
 const houseTracker_Model = new mongoose.Schema(
     {
-        type     : {type: String},
+        category : {type: String},
         purpose  : {type : String, },
         detail   : {type: String},
         amount   : {type: Number},

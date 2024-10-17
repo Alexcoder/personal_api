@@ -12,9 +12,9 @@ const router = express.Router();
 
 router.post( "/", createHouseTracker );
 router.get("/" , getHouseTracker );
-router.get(`/find/:HouseTrackerID`, getHouseTrackerById );
-router.put( `/update/:HouseTrackerID`, updateHouseTracker );
+router.get(`/find/:houseTrackerID`, getHouseTrackerById );
+router.put( `/update/:houseTrackerID`, updateHouseTracker );
 // router.patch( `/reply/:idMainEquipment`, "replyEquipment" );
-router.delete( `/delete/:HouseTrackerID`, deleteHouseTracker );
+router.delete( `/delete/:houseTrackerID`, deleteHouseTracker );
 
 export default router;
