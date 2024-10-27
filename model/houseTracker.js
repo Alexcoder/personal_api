@@ -3,13 +3,20 @@ import mongoose from "mongoose";
 
 const houseTracker_Model = new mongoose.Schema(
     {
-        category : {type: String},
-        purpose  : {type : String, },
-        detail   : {type: String},
-        amount   : {type: Number},
-        date     : {type: String, default: new Date()},
+        familyName : { type: String, required: true },
+        month      : { type: String, required: true },
+        creator    : {type: mongoose.Schema.Types.ObjectId, required: true},  
+        budget     : [
+               {
+                purpose         : {type: String, required: true},
+                detail          : {type: String, },
+                amountPresented : [ {amount: {type : Number}, date: {type: Date}, }],
+                amountSpent     : [ {amount: {type : Number}, date: {type: Date}, }],
+                date            : {type: Date, },
+               }
+        ] ,
     },
-    {timeseries: true}
+    {timestamps: true}
 );
 
 export const HouseTracker = mongoose.model("HouseTracker", houseTracker_Model);

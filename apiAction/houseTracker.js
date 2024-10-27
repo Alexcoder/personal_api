@@ -13,17 +13,60 @@ cloudinary.config({
 });
 
 export const createHouseTracker = async(req, res) =>{
-  console.log("newHouseTracker" , req?.body)
+  // console.log("newHouseTracker" , req?.body)
   const newHouseTrackerReport = {
-    category : req.body.category,
     purpose  : req.body.purpose,
     detail   : req.body.detail,
     amount   : req.body.amount,
     date     : req.body.date,
+    month     : req.body.month,
   };
   try {
     const created = await new HouseTracker(newHouseTrackerReport).save();
      res.status(200).json(created); 
+    } catch (err) {
+        res.status(400).json(err)
+    }   
+};
+
+export const createHouseTrackerExpense = async(req, res) =>{
+  console.log("createTrackerExpense" , req?.body ? "Arrived" : "")
+  const newHouseTrackerReport = {
+    familyName : "",
+    month  : req.body.month,
+    creator    : req.body._id || "123454",  
+    budget     : [
+           {
+            purpose         : req.body.purpose,
+            detail          : req.body.detail,
+            amountPresented : [ ],
+            amountSpent     : [ ],
+            date            : req.body.date,
+           }
+    ] ,
+  };
+  const updateDetail={
+    purpose         : req?.body?.purpose,
+    detail          : req?.body?.detail,
+    amountPresented : [ ],
+    amountSpent     : [ ],
+    date            : req?.body?.date,
+  };
+
+  try {
+      //  const existing = await HouseTracker.find({ month: req?.body?.month });
+      //  console.log(existing)
+      //  if(!existing){
+        //  const creatNew = await new HouseTracker(newHouseTrackerReport).save();
+         const creatNew = await HouseTracker.create(newHouseTrackerReport);
+         res.status(200).json(newHouseTrackerReport)
+        // }
+          // const updated = await HouseTracker.updateOne(
+          //   { month: req?.body.month},
+          //   { $push : {budget: updateDetail}, },
+          //   {new:true} 
+          // )
+          // res.status(200).json(updated); 
     } catch (err) {
         res.status(400).json(err)
     }   
