@@ -30,44 +30,47 @@ export const createHouseTracker = async(req, res) =>{
 };
 
 export const createHouseTrackerExpense = async(req, res) =>{
-  console.log("createTrackerExpense" , req?.body ? "Arrived" : "")
+  console.log("createTrackerExpense" , req?.body ? req?.body : "")
   const newHouseTrackerReport = {
     familyName : "",
-    month  : req.body.month,
-    creator    : req.body._id || "123454",  
+    month  : req?.body?.month,
+    creator    : "123454",  
     budget     : [
            {
-            purpose         : req.body.purpose,
-            detail          : req.body.detail,
-            amountPresented : [ ],
+            purpose         : req?.body.purpose,
+            detail          : req?.body.detail,
+            amountRequired  : [ {amount: req?.body.amountRequired, date: req?.body?.date} ],
+            amountSent      : [ ],
             amountSpent     : [ ],
-            date            : req.body.date,
+            date            : req?.body.date,
            }
     ] ,
   };
   const updateDetail={
     purpose         : req?.body?.purpose,
     detail          : req?.body?.detail,
-    amountPresented : [ ],
+    amountRequired  : [ {amount: req?.body.amount, date: req?.body?.date} ],
+    amountSent      : [ ],
     amountSpent     : [ ],
     date            : req?.body?.date,
   };
 
   try {
-      //  const existing = await HouseTracker.find({ month: req?.body?.month });
+      //  const existing = await HouseTracker.find({ month: req?.body.month });
+        // const creatNew = await new HouseTracker(newHouseTrackerReport).save()
       //  console.log(existing)
       //  if(!existing){
-        //  const creatNew = await new HouseTracker(newHouseTrackerReport).save();
-         const creatNew = await HouseTracker.create(newHouseTrackerReport);
-         res.status(200).json(newHouseTrackerReport)
+      //    const creatNew = await HouseTracker.create(newHouseTrackerReport);
+      //    res.status(200).json(newHouseTrackerReport)
+      //   }else{
+      //     const updated = await HouseTracker.updateOne(
+      //       { month: req?.body.month},
+      //       { $push : {budget: updateDetail}, },
+      //     //   {new:true} 
+      //     )
+          res.status(200).json(newHouseTrackerReport); 
         // }
-          // const updated = await HouseTracker.updateOne(
-          //   { month: req?.body.month},
-          //   { $push : {budget: updateDetail}, },
-          //   {new:true} 
-          // )
-          // res.status(200).json(updated); 
-    } catch (err) {
+    } catch(err){
         res.status(400).json(err)
     }   
 };
