@@ -39,7 +39,7 @@ export const createHouseTrackerExpense = async(req, res) =>{
            {
             purpose         : req?.body.purpose,
             detail          : req?.body.detail,
-            amountRequired  : [ {amount: req?.body.amountRequired, date: req?.body.date} ],
+            amount  : [ {required: req?.body.amountRequired, date: req?.body.date} ],
             amountSent      : [ ],
             amountSpent     : [ ],
             date            : req?.body.date,
