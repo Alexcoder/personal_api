@@ -33,13 +33,13 @@ export const createHouseTrackerExpense = async(req, res) =>{
   console.log("createTrackerExpense" , req?.body ? req?.body : "")
   const newHouseTrackerReport = {
     familyName : "",
-    month  : req?.body?.month,
+    month  : req?.body.month,
     creator    : "123454",  
     budget     : [
            {
             purpose         : req?.body.purpose,
             detail          : req?.body.detail,
-            amountRequired  : [ {amount: req?.body.amountRequired, date: req?.body?.date} ],
+            amountRequired  : [ {amount: req?.body.amountRequired, date: req?.body.date} ],
             amountSent      : [ ],
             amountSpent     : [ ],
             date            : req?.body.date,
@@ -47,8 +47,8 @@ export const createHouseTrackerExpense = async(req, res) =>{
     ] ,
   };
   const updateDetail={
-    purpose         : req?.body?.purpose,
-    detail          : req?.body?.detail,
+    purpose         : req?.body.purpose,
+    detail          : req?.body.detail,
     amountRequired  : [ {amount: req?.body.amount, date: req?.body?.date} ],
     amountSent      : [ ],
     amountSpent     : [ ],
@@ -57,7 +57,7 @@ export const createHouseTrackerExpense = async(req, res) =>{
 
   try {
       //  const existing = await HouseTracker.find({ month: req?.body.month });
-        // const creatNew = await new HouseTracker(newHouseTrackerReport).save()
+        const createNew = await new HouseTracker(newHouseTrackerReport).save()
       //  console.log(existing)
       //  if(!existing){
       //    const creatNew = await HouseTracker.create(newHouseTrackerReport);
@@ -68,7 +68,7 @@ export const createHouseTrackerExpense = async(req, res) =>{
       //       { $push : {budget: updateDetail}, },
       //     //   {new:true} 
       //     )
-          res.status(200).json(newHouseTrackerReport); 
+          res.status(200).json(createNew); 
         // }
     } catch(err){
         res.status(400).json(err)

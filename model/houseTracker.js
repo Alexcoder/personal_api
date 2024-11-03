@@ -10,9 +10,9 @@ const houseTracker_Model = new mongoose.Schema(
                {
                 purpose         : {type: String, required: true},
                 detail          : {type: String, },
-                amountRequired : [ {amount: {type : Number}, date: {type: Date}, }],
-                amountSent : [ {amount: {type : Number}, date: {type: Date}, }],
-                amountSpent     : [ {amount: {type : Number}, date: {type: Date}, }],
+                amountRequired  : [ {amount: {type : Number}, date: {type: String}, }],
+                amountSent      : [ {amount: {type : Number}, date: {type: String}, }],
+                amountSpent     : [ {amount: {type : Number}, date: {type: String}, }],
                 date            : {type: Date, },
                }
         ] ,
