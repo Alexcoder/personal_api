@@ -40,7 +40,6 @@ export const createHouseTrackerExpense = async(req, res) =>{
             purpose         : req?.body.purpose,
             detail          : req?.body.detail,
             amount  : [ {required: req?.body.amountRequired, date: req?.body.date} ],
-            amountSent      : [ ],
             amountSpent     : [ ],
             date            : req?.body.date,
            }
@@ -49,8 +48,7 @@ export const createHouseTrackerExpense = async(req, res) =>{
   const updateDetail={
     purpose         : req?.body.purpose,
     detail          : req?.body.detail,
-    amountRequired  : [ {amount: req?.body.amount, date: req?.body?.date} ],
-    amountSent      : [ ],
+    amount  : [ {required: req?.body.amount, date: req?.body?.date} ],
     amountSpent     : [ ],
     date            : req?.body?.date,
   };
@@ -61,14 +59,14 @@ export const createHouseTrackerExpense = async(req, res) =>{
           const createNew = await new HouseTracker(newHouseTrackerReport).save()
           res.status(200).json(createNew)
           }
-        //   else{
-        //  const updated = await HouseTracker.updateOne(
-        //    { month: req?.body.month},
-        //    { $push : {budget: updateDetail}, },
-        //     {new:true} 
-        //   )
-        //    res.status(200).json(updated); 
-      //  }
+          else{
+         const updated = await HouseTracker.updateOne(
+           { month: req?.body.month},
+           { $push : {budget: updateDetail}, },
+            {new:true} 
+          )
+           res.status(200).json(updated); 
+       }
     } catch(err){
         res.status(400).json(err)
     }   

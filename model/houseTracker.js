@@ -5,14 +5,14 @@ const houseTracker_Model = new mongoose.Schema(
     {
         month      : { type: String, },
         creator    : {type: String}, 
-        overhead   : {type: Number},  
+        overhead   : [{amount :{type: Number}, date:{type: String}, purpose:{type: String}}],  
         budget     : [
                {
-                purpose         : {type: String, required: true},
-                detail          : {type: String, },
-                amount  : [ {required: {type : Number}, date: {type: String}, status: {type: String, default:"pending"}, spent:{type: Number}} ],
-                amountSpent     : [ {amount: {type : Number}, date: {type: String}, }],
-                date            : {type: Date, },
+                purpose      : {type: String, required: true},
+                detail       : {type: String, },
+                amount       : [ {required: {type : Number}, date: {type: String}, status: {type: String, default:"pending"}, spent:{type: Number}} ],
+                amountSpent  : [ {amount: {type : Number}, date: {type: String}, } ],
+                date         : { type: String}
                }
         ] ,
     },
