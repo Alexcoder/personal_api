@@ -56,19 +56,20 @@ export const createHouseTrackerExpense = async(req, res) =>{
   };
 
   try {
-       const existing = await HouseTracker.find({ month: req?.body.month });
+      //  const existing = await HouseTracker.find({ month: req?.body.month });
        // console.log(existing)
-       if(!existing){
+       if(req?.body.type==="todo"){
           const createNew = await new HouseTracker(newHouseTrackerReport).save()
           res.status(200).json(createNew)
-          }else{
-         const updated = await HouseTracker.updateOne(
-           { month: req?.body.month},
-           { $push : {budget: updateDetail}, },
-            {new:true} 
-          )
-           res.status(200).json(updated); 
-       }
+          }
+        //   else{
+        //  const updated = await HouseTracker.updateOne(
+        //    { month: req?.body.month},
+        //    { $push : {budget: updateDetail}, },
+        //     {new:true} 
+        //   )
+        //    res.status(200).json(updated); 
+      //  }
     } catch(err){
         res.status(400).json(err)
     }   
