@@ -56,9 +56,8 @@ export const createHouseTrackerExpense = async(req, res) =>{
   };
 
   try {
-      //  const existing = await HouseTracker.find({ month: req?.body.month });
-       // console.log(existing)
-       if(req?.body.type==="todo"){
+       const existing = await HouseTracker.findOne({ month: req?.body.month });
+       if(!existing){
           const createNew = await new HouseTracker(newHouseTrackerReport).save()
           res.status(200).json(createNew)
           }
