@@ -60,7 +60,7 @@ export const createHouseTrackerExpense = async(req, res) =>{
        // console.log(existing)
        if(!existing){
           const createNew = await new HouseTracker(newHouseTrackerReport).save()
-          res.status(200).json()
+          res.status(200).json(createNew)
           }else{
          const updated = await HouseTracker.updateOne(
            { month: req?.body.month},
