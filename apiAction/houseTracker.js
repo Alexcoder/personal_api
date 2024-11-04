@@ -134,11 +134,23 @@ export async function getHouseTrackerById(req, res){
   };
   
   export const deleteHouseTracker = async(req, res) =>{ 
-    const postId = req?.params.houseTrackerID.id
-    const budgetId = req?.params.houseTrackerID.budgetId
+    const postId = req?.params.houseTrackerID
     console.log(req.params.houseTrackerID)
     try {
         await HouseTracker.findByIdAndDelete(postId);
+        res.status(200).json("Post deleted")
+    } catch (err) {
+        res.status(400).json(err)
+    }   
+};
+  export const deleteHouseTrackerBudget = async(req, res) =>{ 
+    const postId = req?.params.houseTrackerID
+    const budgetId = req?.params.budgetID
+    try {
+        await HouseTracker.updateOne(
+          {_id : postId},
+          { $pull : { budget:{_id: budgetId}} },
+        );
         res.status(200).json("Post deleted")
     } catch (err) {
         res.status(400).json(err)
