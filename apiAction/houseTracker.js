@@ -138,16 +138,8 @@ export async function getHouseTrackerById(req, res){
     const budgetId = req?.params.houseTrackerID.budgetId
     console.log(req.params.houseTrackerID)
     try {
-      if(budgetId.length<2){
         await HouseTracker.findByIdAndDelete(postId);
         res.status(200).json("Post deleted")
-      }else{
-        await HouseTracker.updateOne(
-          {_id: postId},
-          { $pull: {budget: {_id: budgetId }} } ,
-        );
-        res.status(200).json("Post deleted")
-      }
     } catch (err) {
         res.status(400).json(err)
     }   
