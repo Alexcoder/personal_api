@@ -30,7 +30,7 @@ export const createHouseTracker = async(req, res) =>{
 };
 
 export const createHouseTrackerExpense = async(req, res) =>{
-  console.log("createTrackerExpense" , req?.body ? req?.body : "")
+  console.log("createTrackerExpense" , req?.body ? "arrived" : "")
   const newHouseTrackerReport = {
     familyName : "",
     month  : req?.body.month,
@@ -134,9 +134,20 @@ export async function getHouseTrackerById(req, res){
   };
   
   export const deleteHouseTracker = async(req, res) =>{ 
+    const postId = req?.params.houseTrackerID.id
+    const budgetId = req?.params.houseTrackerID.budgetId
+    console.log(req.params.houseTrackerID)
     try {
-      await HouseTracker.findByIdAndDelete(req?.params.houseTrackerID);
-      res.status(200).json("Post deleted")
+      if(!budgetId){
+        await HouseTracker.findByIdAndDelete(postId);
+        res.status(200).json("Post deleted")
+      }else{
+        await HouseTracker.updateOne(
+          {_id: postId},
+          { $pull: {budget: {_id: budgetId }} } ,
+        );
+        res.status(200).json("Post deleted")
+      }
     } catch (err) {
         res.status(400).json(err)
     }   
