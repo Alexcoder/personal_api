@@ -138,7 +138,7 @@ export async function getHouseTrackerById(req, res){
     const budgetId = req?.params.houseTrackerID.budgetId
     console.log(req.params.houseTrackerID)
     try {
-      if(!budgetId){
+      if(budgetId.length<2){
         await HouseTracker.findByIdAndDelete(postId);
         res.status(200).json("Post deleted")
       }else{
