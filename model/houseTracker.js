@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 const houseTracker_Model = new mongoose.Schema(
     {
         month      : { type: String, },
+        year       : { type: Number },
         creator    : {type: String}, 
         overhead   : [{amount :{type: Number}, date:{type: String}, purpose:{type: String}}],  
         budget     : [

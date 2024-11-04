@@ -34,6 +34,7 @@ export const createHouseTrackerExpense = async(req, res) =>{
   const newHouseTrackerReport = {
     familyName : "",
     month  : req?.body.month,
+    year  : req?.body.year,
     creator    : "123454",  
     budget     : [
            {
@@ -48,13 +49,13 @@ export const createHouseTrackerExpense = async(req, res) =>{
   const updateDetail={
     purpose         : req?.body.purpose,
     detail          : req?.body.detail,
-    amount  : [ {required: req?.body.amount, date: req?.body?.date} ],
+    amount  : [ {required: req?.body.amountRequired, date: req?.body?.date} ],
     amountSpent     : [ ],
     date            : req?.body?.date,
   };
 
   try {
-       const existing = await HouseTracker.findOne({ month: req?.body.month });
+       const existing = await HouseTracker.findOne({ month: req?.body.month, year: req?.body.year });
        if(!existing){
           const createNew = await new HouseTracker(newHouseTrackerReport).save()
           res.status(200).json(createNew)
