@@ -2,7 +2,7 @@ import { Auth,  } from "../model/auth.js";
 import bcrypt from "bcryptjs"
 
 const hash =(password)=> bcrypt.hash(password, 10)
-const compare =(enteredPassWord, storedPassword)=> bcrypt.compare(enteredPassword, storedPassword);
+const compare =(enteredPassword, storedPassword)=> bcrypt.compare(enteredPassword, storedPassword);
 
 export const register = async(req, res) =>{
   console.log("register", req?.body? "arrived": "")
@@ -41,13 +41,15 @@ export const login = async(req, res) =>{
      if(!existingUser){ return res.status(400).json("User Does Not Exist") }
      const comparePassword = await compare(req?.body.password, existingUser?.hashPassword)
      if (!comparePassword){ return res.status(400).json("You entered wrong password") }
-       res.status(200).json({
-        _id       : existingUser?._id,
-        email     : existingUser?.email,
-        firstName : existingUser?.firstName,
-        lastName  : existingUser?.lastName, 
-        admin     : existingUser?.admin ,
-      }) 
+     if(comparePassword){
+        res.status(200).json({
+         _id       : existingUser?._id,
+         email     : existingUser?.email,
+         firstName : existingUser?.firstName,
+         lastName  : existingUser?.lastName, 
+         admin     : existingUser?.admin ,
+       }) 
+      }
     } catch (err) {
         res.status(400).json(err)
     }   
