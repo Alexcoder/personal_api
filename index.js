@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 // import { Server } from "socket.io";
 // import {createServer} from "http";
 
+import authRoute from "./route/auth.js";
 import ohodoRoute from "./route/ohodoTracker.js";
 import houseTrackerRoute from "./route/houseTracker.js";
 
@@ -19,6 +20,7 @@ app.use(bodyParser.json({limit:"30mb", extended: true}));
 app.use(bodyParser.urlencoded({limit:"30mb", extended:true}));
 
 //ROUTES
+app.use("/api/auth", authRoute);
 app.use("/api/ohodoTracker", ohodoRoute);
 app.use("/api/houseTracker", houseTrackerRoute);
 
