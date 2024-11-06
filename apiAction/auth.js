@@ -19,7 +19,7 @@ export const register = async(req, res) =>{
      if(existingUser){
       return res.status(400).json("User Already Exist")
      }
-     const hashPassword = await hash(req?.body.password.toString())
+     const hashPassword = await hash(req?.body.password)
      const savedUser = await new Auth({...newUser, hashPassword}).save();
      res.status(200).json({
       _id       : savedUser._id,

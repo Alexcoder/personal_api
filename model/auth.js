@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 const auth_Model = new mongoose.Schema(
     {
         email            : { type: String, },
-        password         : { type: Number },
+        password         : { type: String },
         confirmPassword  : {type: String}, 
         firstName        : { type: String },  
         lastName         : { type: String },  
