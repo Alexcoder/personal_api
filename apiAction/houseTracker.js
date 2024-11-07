@@ -43,6 +43,7 @@ export const createHouseTrackerExpense = async(req, res) =>{
             amount  : [ {required: req?.body.amountRequired, date: req?.body.date} ],
             amountSpent     : [ ],
             date            : req?.body.date,
+            creator         : req?.body.creator
            }
     ] ,
   };

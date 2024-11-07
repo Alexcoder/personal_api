@@ -13,7 +13,8 @@ const houseTracker_Model = new mongoose.Schema(
                 detail       : {type: String, },
                 amount       : [ {required: {type : Number}, date: {type: String}, status: {type: String, default:"pending"}, spent:{type: Number}} ],
                 amountSpent  : [ {amount: {type : Number}, date: {type: String}, } ],
-                date         : { type: String}
+                date         : { type: String},
+                creator      : { type: String}
                }
         ] ,
     },
