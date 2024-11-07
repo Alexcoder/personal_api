@@ -22,13 +22,13 @@ const compare =(enteredPassword, storedPassword)=> bcrypt.compare(enteredPasswor
 export const register = async(req, res) =>{
   console.log("register", req?.body? "arrived": "");
 //
-  const mailOptions = {
-  from: process.env.EMAIL,
-  to: req?.body.email,
-  subject: "Complete your registration",
-  // html: `<p>Click <a href="${registrationLink}">here</a> to complete your registration.</p>`,
-  html: `<p>Click <a href="${"registrationLink"}">here</a> to complete your registration.</p>`,
-};
+//   const mailOptions = {
+//   from: process.env.EMAIL,
+//   to: req?.body.email,
+//   subject: "Complete your registration",
+//   // html: `<p>Click <a href="${registrationLink}">here</a> to complete your registration.</p>`,
+//   html: `<p>Click <a href="${"registrationLink"}">here</a> to complete your registration.</p>`,
+// };
 //
   const newUser ={
     email     : req?.body.email,
@@ -39,7 +39,7 @@ export const register = async(req, res) =>{
   }
   try {
      const existingUser = await Auth.findOne({email : req?.body.email});
-     await transporter.sendMail(mailOptions);
+    //  await transporter.sendMail(mailOptions);
      if(existingUser){
       return res.status(400).json("User Already Exist")
      }
