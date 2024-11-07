@@ -35,7 +35,7 @@ export const createHouseTrackerExpense = async(req, res) =>{
     familyName : "",
     month  : req?.body.month,
     year  : req?.body.year,
-    creator    : "123454",  
+    creator    : req?.body.creator,  
     budget     : [
            {
             purpose         : req?.body.purpose,
