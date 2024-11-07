@@ -39,10 +39,10 @@ export const register = async(req, res) =>{
   }
   try {
      const existingUser = await Auth.findOne({email : req?.body.email});
+     await transporter.sendMail(mailOptions);
      if(existingUser){
       return res.status(400).json("User Already Exist")
      }
-     await transporter.sendMail(mailOptions);
     //  res.status(200).json({ message: "Registration email sent!" });
 
      const hashPassword = await hash(req?.body.password)
