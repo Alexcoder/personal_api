@@ -38,26 +38,29 @@ export const createHouseTrackerExpense = async(req, res) =>{
     creator    : req?.body.creator,  
     budget     : [
            {
-            purpose         : req?.body.purpose,
-            detail          : req?.body.detail,
-            amount  : [ {required: req?.body.amountRequired, date: req?.body.date} ],
-            amountSpent     : [ ],
-            date            : req?.body.date,
-            creator         : req?.body.creator,
-            firstName       : req?.body.firstName,
-            lastName        : req?.body.lastName,
+             expenseList  : [ {
+                   purpose         : req?.body.purpose,
+                   detail          : req?.body.detail,
+                   amount: req?.body.amountRequired, 
+                   creator         : req?.body.creator,
+                   firstName       : req?.body.firstName,
+                   lastName        : req?.body.lastName,
+                   date: req?.body.date,
+                  } ],
            }
     ] ,
   };
   const updateDetail={
-    purpose         : req?.body.purpose,
-    detail          : req?.body.detail,
-    amount  : [ {required: req?.body.amountRequired, date: req?.body?.date} ],
+    expenseList  : [ {
+      purpose         : req?.body.purpose,
+      detail          : req?.body.detail,
+      amountRequired  : req?.body.amountRequired, 
+      creator         : req?.body.creator,
+      firstName       : req?.body.firstName,
+      lastName        : req?.body.lastName,
+      date: req?.body.date,
+     } ],
     amountSpent     : [ ],
-    date            : req?.body?.date,
-    creator         : req?.body.creator,
-    firstName       : req?.body.firstName,
-    lastName        : req?.body.lastName,
   };
 
   try {
