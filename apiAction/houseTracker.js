@@ -172,11 +172,12 @@ export async function getHouseTrackerById(req, res){
     const postId = req?.params.houseTrackerID
     const budgetId = req?.params.budgetID
     try {
-        await HouseTracker.updateOne(
+       const updated = await HouseTracker.updateOne(
           {_id : postId},
           { $pull : { budget:{_id: budgetId}} },
+          {new: true}
         );
-        res.status(200).json("Post deleted")
+        res.status(200).json(updated)
     } catch (err) {
         res.status(400).json(err)
     }   
