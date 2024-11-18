@@ -145,7 +145,7 @@ export async function getHouseTrackerById(req, res){
         budget.expenseList
        )).flat();
        const expenseItem = expenseList.find(item=> item._id.toString().includes(req?.body.expenseId))
-      expenseItem.status = req?.body.approve
+      expenseItem.status = req?.body.status
       } //
       const updated = await find.save()
       res.status(200).json(updated)
