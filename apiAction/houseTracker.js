@@ -41,10 +41,11 @@ export const createHouseTrackerExpense = async(req, res) =>{
              expenseList  : [ {
                    purpose         : req?.body.purpose,
                    detail          : req?.body.detail,
-                   amountRequired   : req?.body.amountRequired, 
+                   amountRequired  : req?.body.amountRequired, 
                    creator         : req?.body.creator,
                    firstName       : req?.body.firstName,
                    lastName        : req?.body.lastName,
+     
                    date: req?.body.date,
                   } ],
            }
@@ -84,7 +85,7 @@ export const createHouseTrackerExpense = async(req, res) =>{
 
 export const getHouseTracker = async(req, res) =>{
    try{
-        const data = await HouseTracker.find()
+        const data = await HouseTracker.find().sort({_id: -1})
         res.status(200).json(data)
    }catch(err){
     res.status(400).json(err)
@@ -133,9 +134,20 @@ export async function getHouseTrackerById(req, res){
   
 
  
-  export const updateHouseTracker = async (req, res) =>{    
+  export const updateHouseTracker = async (req, res) =>{ 
+    console.log("postId", req?.params.houseTrackerID)   
+    console.log("expenseId", req?.body.expenseId)   
     try {
-      const updated = await HouseTracker.findByIdAndUpdate(req.params.houseTrackerID, { $set : req.body }, { new : true });
+      // const updated = await HouseTracker.findByIdAndUpdate(req.params.houseTrackerID, { $set : req.body }, { new : true });
+      const find = await HouseTracker.findOne({_id:req.params.houseTrackerID});
+      if(find){
+       const expenseList = find.budget.map(budget=>(
+        budget.expenseList
+       )).flat();
+       const expenseItem = expenseList.find(item=> item._id.toString().includes(req?.body.expenseId))
+      expenseItem.status = req?.body.approve
+      } //
+      const updated = await find.save()
       res.status(200).json(updated)
     } catch (err) {
       res.status(400).json(err)
