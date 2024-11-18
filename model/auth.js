@@ -4,13 +4,14 @@ import mongoose from "mongoose";
 const auth_Model = new mongoose.Schema(
     {
         email            : { type: String, },
+        username         : { type: String  },
         password         : { type: String },
         hashPassword     : { type : String }, 
-        confirmPassword  : {type: String}, 
+        confirmPassword  : { type: String}, 
         firstName        : { type: String },  
         lastName         : { type: String },  
-        followers        : {type : Array },
-        admin            : {type : Boolean, default: true}
+        followers        : { type : Array },
+        admin            : { type : Boolean, default: true}
     },
     {timestamps: true}
 );
