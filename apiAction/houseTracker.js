@@ -45,6 +45,8 @@ export const createHouseTrackerExpense = async(req, res) =>{
                    creator         : req?.body.creator,
                    firstName       : req?.body.firstName,
                    lastName        : req?.body.lastName,
+                   email           : req?.body.email, 
+                   username        : req?.body.email, 
      
                    date: req?.body.date,
                   } ],
@@ -59,6 +61,8 @@ export const createHouseTrackerExpense = async(req, res) =>{
       creator         : req?.body.creator,
       firstName       : req?.body.firstName,
       lastName        : req?.body.lastName,
+      email           : req?.body.email, 
+      username        : req?.body.email, 
       date: req?.body.date,
      } ],
     amountSpent     : [ ],
