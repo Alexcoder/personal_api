@@ -11,11 +11,13 @@ const houseTracker_Model = new mongoose.Schema(
                     username       : { type: String },
                     email          : { type: String },
                     firstName      : { type: String },
-                    purpose        : { type: String,},
-                    detail         : { type: String },
                     lastName       : { type: String },
-                    amountSpent    : { type: Number },
-                    date           : {type: String}, 
+                    requestor      : { type: String, default:"" },
+                    
+                    detail         : { type: String },
+                    purpose        : { type: String,},
+                    amount    : { type: Number },
+                    date           : { type: String}, 
                     } ],
 
         budget     : [
