@@ -20,7 +20,10 @@ const houseTracker_Model = new mongoose.Schema(
                     username       : { type: String },
                     amountSpent    : { type: Number },
                     date: {type: String}, 
-                    status: {type: String, default:"pending"}, 
+                    status: {type: String, default:"pending"},
+                    validatorId    : { type: String } ,
+                    validatorName  : { type: String } ,
+                    validationDate : { type: String } ,
                     } ],
                  amountSent    : [ {
                     purpose    : { type: String, required: true},
