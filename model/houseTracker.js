@@ -19,7 +19,7 @@ const houseTracker_Model = new mongoose.Schema(
                     email          : { type: String },
                     username       : { type: String },
                     amountSpent    : { type: Number },
-                    date: {type: String}, 
+                    date           : {type: String}, 
                     status: {type: String, default:"pending"},
                     validatorId    : { type: String } ,
                     validatorName  : { type: String } ,
