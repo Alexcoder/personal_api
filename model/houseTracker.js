@@ -3,14 +3,25 @@ import mongoose from "mongoose";
 
 const houseTracker_Model = new mongoose.Schema(
     {
-        month      : { type: String, },
-        year       : { type: Number },
-        creator    : {type: String}, 
-        overhead   : [{amount :{type: Number}, date:{type: String}, purpose:{type: String}}],  
+        month       : { type: String, },
+        year        : { type: Number },
+        creator     : {type: String}, 
+        individualExpense : [ {
+                    creator        : { type: String },
+                    username       : { type: String },
+                    email          : { type: String },
+                    firstName      : { type: String },
+                    purpose        : { type: String,},
+                    detail         : { type: String },
+                    lastName       : { type: String },
+                    amountSpent    : { type: Number },
+                    date           : {type: String}, 
+                    } ],
+
         budget     : [
                {
                  expenseList  : [ {
-                    purpose        : { type: String, required: true},
+                    purpose        : { type: String },
                     detail         : { type: String },
                     amountRequired : { type : Number}, 
                     creator        : { type: String },
@@ -24,19 +35,6 @@ const houseTracker_Model = new mongoose.Schema(
                     validatorId    : { type: String } ,
                     validatorName  : { type: String } ,
                     validationDate : { type: String } ,
-                    } ],
-                 amountSent    : [ {
-                    purpose    : { type: String, required: true},
-                    detail     : { type: String },
-                    amountSent : { type: Number }, 
-                    creator    : { type: String },
-                    firstName  : { type: String },
-                    lastName   : { type: String },
-                    email   : { type: String },
-                    username   : { type: String },
-                    status     : { type: String, default:"pending"}, 
-                    spent      : { type: Number },
-                    date       : { type: String }, 
                     } ],
                }
         ] ,
