@@ -10,6 +10,11 @@ const auth_Model = new mongoose.Schema(
         confirmPassword  : { type: String}, 
         firstName        : { type: String },  
         lastName         : { type: String },  
+        followerRequest  : [{ 
+            reqId  : { type: String },
+            date   : { type: String },
+            status : { type: String, default:"pending"} 
+        }],  
         followers        : { type : Array },
         admin            : { type : Boolean, default: true}
     },
