@@ -149,7 +149,7 @@ export async function getHouseTrackerById(req, res){
        )).flat();
        const expenseItem = expenseList.find(item=> item._id.toString().includes(req?.body.expenseId))
       expenseItem.status = req?.body.status;
-      find.individualExpense = find.individualExpense.push({
+      find.individualExpense.push({
         creator  : req?.body.creator,
         username : req?.body.username,
         email    : req?.body.email,
