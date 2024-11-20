@@ -142,14 +142,25 @@ export async function getHouseTrackerById(req, res){
     console.log("postId", req?.params.houseTrackerID)   
     console.log("expenseId", req?.body.expenseId)   
     try {
-      // const updated = await HouseTracker.findByIdAndUpdate(req.params.houseTrackerID, { $set : req.body }, { new : true });
       const find = await HouseTracker.findOne({_id:req.params.houseTrackerID});
       if(find){
-       const expenseList = find.budget.map(budget=>(
+        const expenseList = find.budget.map(budget=>(
         budget.expenseList
        )).flat();
        const expenseItem = expenseList.find(item=> item._id.toString().includes(req?.body.expenseId))
-      expenseItem.status = req?.body.status
+      expenseItem.status = req?.body.status;
+      find.individualExpense = find.individualExpense.push({
+        creator  : req?.body.creator,
+        username : req?.body.username,
+        email    : req?.body.email,
+        firstName: req?.body.firstname,
+        lastName : req?.body.lastName,
+        requestor: req?.body.requestor,
+        detail   : req?.body.detail,
+        purpose  : req?.body.purpose,
+        amount   : req?.body.amount,
+        date     : req?.body.date,  
+      })
       } //
       const updated = await find.save()
       res.status(200).json(updated)
