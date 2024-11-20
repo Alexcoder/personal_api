@@ -13,7 +13,8 @@ const houseTracker_Model = new mongoose.Schema(
                     firstName      : { type: String },
                     lastName       : { type: String },
                     requestor      : { type: String, default:"" },
-                    
+                    itemId         : { type: String, default:"" },
+                     
                     detail         : { type: String },
                     purpose        : { type: String,},
                     amount    : { type: Number },
