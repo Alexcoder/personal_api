@@ -16,7 +16,8 @@ const auth_Model = new mongoose.Schema(
             status : { type: String, default:"pending"} 
         }],  
         followers        : { type : Array },
-        admin            : { type : Boolean, default: true}
+        admin            : { type : Boolean, default: true},
+        group            : { type: Array }
     },
     {timestamps: true}
 );

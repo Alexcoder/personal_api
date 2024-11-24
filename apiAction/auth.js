@@ -53,6 +53,7 @@ export const register = async(req, res) =>{
       firstName : savedUser.firstName,
       lastName  : savedUser.lastName, 
       admin     : savedUser.admin ,
+      group     : existingUser?.group,
     }) 
     } catch (err) {
         res.status(400).json(err)
@@ -74,6 +75,7 @@ export const login = async(req, res) =>{
          firstName : existingUser?.firstName,
          lastName  : existingUser?.lastName, 
          admin     : existingUser?.admin ,
+         group     : existingUser?.group,
        }) 
       }
     } catch (err) {
