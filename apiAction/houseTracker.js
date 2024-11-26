@@ -25,7 +25,12 @@ export const createHouseTrackerGroup = async(req, res)=>{
       const foundUser = await Auth.findOne({email: req?.body.user.email});
      const newlyCreated = await new HouseTrackerV1(dataToCreate).save();
       if(foundUser){
-        foundUser.group.push(newlyCreated._id)
+        foundUser.group.push({
+          groupId           : newlyCreated?._id,
+          monthGroupCreated : newlyCreated?.monthCreated,
+          yearGroupCreated  : newlyCreated?.yearCreated,
+          dayGroupCreated   : newlyCreated?.dayCreated,  
+        })
         await foundUser.save()
       }
       res.status(200).json("Group Created Successfully")
@@ -171,14 +176,13 @@ export const getHouseTrackerV1 = async(req, res) =>{
    try{
         const allGroups = await HouseTrackerV1.find()
         const user = await Auth.findOne({_id: req?.params.creator})
-        // const grouped = []
         const grouped = {}
 
         for(const group of user?.group){
-          const filter = await allGroups.filter(item=> item._id.toString()===group.toString());
+          console.log("user.group", user?.group.length)
+          const filter = await allGroups.find(item=> item?._id.toString()===group?.groupId.toString());
           if(filter){
-            grouped[group] = [...filter]
-            // grouped.push(filter[0])
+            grouped[group?.groupId] = {...filter}
           }
         }
 // console.log("grouped", grouped)

@@ -85,8 +85,15 @@ export const login = async(req, res) =>{
 
 export const fetch = async(req, res) =>{
   try {
-     const res = await Auth.find()
-       res.status(200).json(res) 
+     const existingUser = await Auth.find()
+       res.status(200).json({
+        _id       : existingUser?._id,
+        email     : existingUser?.email,
+        firstName : existingUser?.firstName,
+        lastName  : existingUser?.lastName, 
+        admin     : existingUser?.admin ,
+        group     : existingUser?.group,
+      }) 
     } catch (err) {
         res.status(400).json(err)
     }   

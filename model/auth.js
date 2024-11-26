@@ -17,7 +17,12 @@ const auth_Model = new mongoose.Schema(
         }],  
         followers        : { type : Array },
         admin            : { type : Boolean, default: true},
-        group            : { type: Array }
+        group            : [ {
+            groupId           : { type: String}, 
+            monthGroupCreated : { type: String}, 
+            yearGroupCreated  : { type: String}, 
+            dayGroupCreated   : { type: String}, 
+        }]
     },
     {timestamps: true}
 );
