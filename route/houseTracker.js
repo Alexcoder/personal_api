@@ -4,12 +4,12 @@ import {
      getHouseTrackerById, 
      getHouseTrackerByCategory,
      createHouseTracker,
-     updateHouseTracker,
+     verifyStatus,
      deleteHouseTracker,
      deleteHouseTrackerBudget,
      createHouseTrackerExpense,
-     createHouseTrackerGroup,
-     updateHouseTrackerV1Budget,
+     createGroup,
+     verifyStatusV1,
      getHouseTrackerV1,
     } from "../apiAction/houseTracker.js";
 
@@ -19,9 +19,9 @@ router.get("/" , getHouseTracker );
 router.get("/v1/:creator" , getHouseTrackerV1 );
 router.get(`/find/:houseTrackerID`, getHouseTrackerById );
 router.post( "/", createHouseTracker );
-router.put( `/update/:houseTrackerID`, updateHouseTracker );
-router.post( "/v1/:groupId", createHouseTrackerGroup );
-router.put( `/update/:houseTrackerIDV1`, updateHouseTrackerV1Budget );
+router.put( `/verifyStatus/:houseTrackerID`, verifyStatus );
+router.post( "/v1/:groupId", createGroup );
+router.put( `/verifyStatus/:houseTrackerIDV1`, verifyStatusV1 );
 // router.patch( `/reply/:idMainEquipment`, "replyEquipment" );
 router.delete( `/delete/:houseTrackerID`, deleteHouseTracker );
 router.delete( `/deleteBudget/:houseTrackerID/:budgetID`, deleteHouseTrackerBudget );

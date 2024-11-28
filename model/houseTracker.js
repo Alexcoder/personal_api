@@ -109,7 +109,18 @@ const houseTrackerV1_Model = new mongoose.Schema(
                     username     : { type: String },
                     joinDate : {type : String }
         }],
-        budget  : [ {
+        budget : [{
+                    purpose        : { type: String, default:"" },
+                    detail         : { type: String, default:"" },
+                    amountRequired : { type : Number, default: 0}, 
+                    amountArray    : [{ amount: {type: Number, default: 0}, date: {type:String, default: ""},}],
+                    creator        : { type: creatorSchema, },
+                    amountSpent    : { type: Number, default: 0 },
+                    status: {type: String, default:"pending"},
+                    validator    : { type: validatorSchema, },
+
+        }],
+        expenseList  : [ {
                     purpose        : { type: String, default:"" },
                     detail         : { type: String, default:"" },
                     amountRequired : { type : Number, default: 0}, 

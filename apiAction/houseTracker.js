@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 
 
 dotenv.config();
-export const createHouseTrackerGroup = async(req, res)=>{
+export const createGroup = async(req, res)=>{
   // console.log("newGroup", req?.params.groupId)
   const dataToCreate = {
     dayCreated  : req?.body.day,
@@ -41,7 +41,7 @@ export const createHouseTrackerGroup = async(req, res)=>{
     res.status(400).json(err)
   }
 }
-export const updateHouseTrackerV1Budget = async(req, res)=>{
+export const verifyStatusV1 = async(req, res)=>{
  console.log("createHouseTrackerV1", req?.body) 
   const  newBudget   ={
     purpose : req?.body.purpose,
@@ -234,7 +234,7 @@ export async function getHouseTrackerById(req, res){
   
 
  
-  export const updateHouseTracker = async (req, res) =>{ 
+  export const verifyStatus = async (req, res) =>{ 
     console.log("postId", req?.params.houseTrackerID)   
     console.log("expenseId", req?.body.expenseId)   
     try {

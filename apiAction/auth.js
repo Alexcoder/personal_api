@@ -2,6 +2,7 @@ import { Auth,  } from "../model/auth.js";
 import bcrypt from "bcryptjs"
 import dotenv from "dotenv"
 import nodemailer from "nodemailer"
+import { HouseTrackerV1 } from "../model/houseTracker.js";
 
 dotenv.config()
 
@@ -83,9 +84,18 @@ export const login = async(req, res) =>{
     }   
 };
 
-export const fetch = async(req, res) =>{
+export const fetchAll = async(req, res) =>{
   try {
      const existingUser = await Auth.find()
+       res.status(200).json(existingUser) 
+    } catch (err) {
+        res.status(400).json(err)
+    }   
+};
+export const fetchOne = async(req, res) =>{
+  // console.log("fetchoneReq", req?.params.userId)
+  try {
+     const existingUser = await Auth.findOne({_id: req?.params.userId})
        res.status(200).json({
         _id       : existingUser?._id,
         email     : existingUser?.email,
@@ -94,6 +104,49 @@ export const fetch = async(req, res) =>{
         admin     : existingUser?.admin ,
         group     : existingUser?.group,
       }) 
+    } catch (err) {
+        res.status(400).json(err)
+    }   
+};
+
+export const addUserToGroup = async(req, res) =>{
+  const newGroup={
+    groupId : req?.body.groupId,
+    monthGroupCreated : req?.body.monthCreated, 
+    yearGroupCreated  : req?.body.yearCreated, 
+    dayGroupCreated   : req?.body.dayCreated, 
+  }
+  const newGroupMember={
+    id        : req?.params.userId,
+    name      : `${req?.body.user.firstName} ${req?.body.user.lastName}`,
+    email     : req?.body.user.email,
+    username  : req?.body.user.username,
+    joinDate  : req.body.joinDate,
+  }
+  try {
+     const existingUser = await Auth.findOne({_id: req?.params.userId})
+     const existingGroup = await HouseTrackerV1.findOne({_id: req?.body.groupId})
+     const isUserInGroup = existingUser.group.some(item=> item?.groupId===req?.body.groupId)
+    //  console.log("isUserInGroup", isUserInGroup)
+     console.log("existingGroup", existingGroup? "group exist" : "")
+     console.log("existingUser", existingUser? "user exist" : "")
+     if(existingUser  && !isUserInGroup){
+     existingUser.group.push(newGroup)
+     existingGroup.groupMember.push(newGroupMember)
+     await existingUser.save()
+     await existingGroup.save()
+     return res.status(200).json({
+      _id       : existingUser?._id,
+      email     : existingUser?.email,
+      firstName : existingUser?.firstName,
+      lastName  : existingUser?.lastName, 
+      admin     : existingUser?.admin ,
+      group     : existingUser?.group,
+      message: "You Have Been Added Successfully"
+    }) 
+     }else{
+      return res.status(200).json({message : "User Is Already A Member"})
+     }
     } catch (err) {
         res.status(400).json(err)
     }   
