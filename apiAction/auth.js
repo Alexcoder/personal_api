@@ -2,7 +2,7 @@ import { Auth,  } from "../model/auth.js";
 import bcrypt from "bcryptjs"
 import dotenv from "dotenv"
 import nodemailer from "nodemailer"
-import { HouseTrackerV1 } from "../model/houseTracker.js";
+import { HouseTracker } from "../model/houseTracker.js";
 
 dotenv.config()
 
@@ -125,7 +125,7 @@ export const addUserToGroup = async(req, res) =>{
   }
   try {
      const existingUser = await Auth.findOne({_id: req?.params.userId})
-     const existingGroup = await HouseTrackerV1.findOne({_id: req?.body.groupId})
+     const existingGroup = await HouseTracker.findOne({_id: req?.body.groupId})
      const isUserInGroup = existingUser.group.some(item=> item?.groupId===req?.body.groupId)
     //  console.log("isUserInGroup", isUserInGroup)
      console.log("existingGroup", existingGroup? "group exist" : "")

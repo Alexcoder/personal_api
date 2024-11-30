@@ -1,9 +1,19 @@
-import { HouseTracker, HouseTrackerV1 } from "../model/houseTracker.js";
+import { HouseTracker } from "../model/houseTracker.js";
 import { Auth } from "../model/auth.js";
 import dotenv from "dotenv";
 
 
 dotenv.config();
+export const getAllHouseTracker=async(req, res)=>{
+  try{
+   const data =  await HouseTracker.find()
+   res.status(200).json(data)
+  }catch(err){
+    console.log(err)
+  }
+}
+
+
 export const createGroup = async(req, res)=>{
   // console.log("newGroup", req?.params.groupId)
   const dataToCreate = {
@@ -16,32 +26,32 @@ export const createGroup = async(req, res)=>{
                     email : req?.body.user.email, username : req?.body.user.username, joinDate: req?.body.date}],
     groupMember : [{id : req?.body.creator, name: `${req?.body.user.firstName} ${req?.body.user.lastName}`, 
                     email : req?.body.user.email, username : req?.body.user.username, joinDate: req?.body.date}],
-    budget      : [ ]
+    budget      : [ ],
+    expensenseList : [],
    }
 
   try{
-    // const isExisting = await HouseTrackerV1.findOne({_id: req?.params.groupId})
-    // if(!isExisting){
       const foundUser = await Auth.findOne({email: req?.body.user.email});
-     const newlyCreated = await new HouseTrackerV1(dataToCreate).save();
-      if(foundUser){
+      const newlyCreated = await new HouseTracker(dataToCreate).save();
+      if(foundUser){ //Add User to Group
         foundUser.group.push({
           groupId           : newlyCreated?._id,
           monthGroupCreated : newlyCreated?.monthCreated,
           yearGroupCreated  : newlyCreated?.yearCreated,
           dayGroupCreated   : newlyCreated?.dayCreated,  
         })
-        await foundUser.save()
-      }
-      res.status(200).json("Group Created Successfully")
-    // }else{
-    //   return res.status(200).json("Group already exist")
-    // }
+        await foundUser.save() //Update User Info
+        res.status(200).json("Group Created Successfully")
+      // }
+    }else{
+      return res.status(200).json("Group already exist")
+    }
   }catch(err){
     res.status(400).json(err)
   }
 }
-export const verifyStatusV1 = async(req, res)=>{
+
+export const verifyStatus = async(req, res)=>{
  console.log("createHouseTrackerV1", req?.body) 
   const  newBudget   ={
     purpose : req?.body.purpose,
@@ -59,7 +69,7 @@ export const verifyStatusV1 = async(req, res)=>{
    validator :{ }
  }
   try{
-      const isExisting = await HouseTrackerV1.findOne({_id : req?.body.groupId.toString()});
+      const isExisting = await HouseTracker.findOne({_id : req?.body.groupId.toString()});
       if(isExisting){
         isExisting.budget.push(newBudget)
         const updated = await isExisting.save()
@@ -96,9 +106,7 @@ export const createHouseTrackerExpense = async(req, res) =>{
     month  : req?.body.month,
     year  : req?.body.year,
     creator    : req?.body.creator,  
-    budget     : [
-           {
-             expenseList  : [ {
+    expenseList  : [ {
                    purpose         : req?.body.purpose,
                    detail          : req?.body.detail,
                    amountRequired  : req?.body.amountRequired, 
@@ -109,9 +117,7 @@ export const createHouseTrackerExpense = async(req, res) =>{
                    username        : req?.body.username, 
      
                    date: req?.body.date,
-                  } ],
-           }
-    ] ,
+    } ],
   };
   const updateDetail={
     expenseList  : [ {
@@ -129,9 +135,8 @@ export const createHouseTrackerExpense = async(req, res) =>{
   };
 
   try {
-      //  const existing = await HouseTracker.findOne({ month: req?.body.month, year: req?.body.year });
-      //  const existing = await HouseTracker.findOne({ _id: req?.body.groupId.toString() });
-       const existing = await HouseTracker.findOne({ _id: "673d980b6501517ffb7b4257" });
+      //  const existing = await HouseTracker.findOne({ _id: "673d980b6501517ffb7b4257" });
+       const existing = await HouseTracker.findOne({ _id: req?.body.groupId.toString() });
        if(!existing){
           const createNew = await new HouseTracker(newHouseTrackerReport).save()
           res.status(200).json(createNew)
@@ -151,30 +156,7 @@ export const createHouseTrackerExpense = async(req, res) =>{
 
 export const getHouseTracker = async(req, res) =>{
    try{
-        const data = await HouseTracker.find().sort({_id: -1})
-        res.status(200).json(data)
-   }catch(err){
-    res.status(400).json(err)
-   }
-  // const { page } = req.query  ;
-  // console.log("page", page)
-  // const LIMIT = 10 ;
-  // const startIndex = ( Number(page)-1 ) * LIMIT;
-  // try {
-  //     const totalEquipment = await HouseTracker.countDocuments({})
-  //     const equipment = await HouseTracker.find().sort({_id : -1}).limit(LIMIT).skip(startIndex);
-  //     res.status(200).json({
-  //       data: equipment ,
-  //       currentPage : Number(page),
-  //       numberOfPages: Math.ceil( totalEquipment / LIMIT ),
-  //     });
-  //   } catch (err) {
-  //     res.status(400).json(err)
-  //   }   
-};
-export const getHouseTrackerV1 = async(req, res) =>{
-   try{
-        const allGroups = await HouseTrackerV1.find()
+        const allGroups = await HouseTracker.find()
         const user = await Auth.findOne({_id: req?.params.creator})
         const grouped = {}
 
@@ -219,7 +201,6 @@ export async function getHouseTrackerById(req, res){
   };
 
 
-
   
   export const getHouseTrackerByCategory = async(req, res)=>{    
     const searchQuery = new RegExp(req.body.category, "i")
@@ -227,40 +208,6 @@ export async function getHouseTrackerById(req, res){
       const data = await HouseTracker.find({ category : searchQuery});
       io.emit("postByCategory", data)
       res.status(200).json(data)
-    } catch (err) {
-      res.status(400).json(err)
-    }   
-  };
-  
-
- 
-  export const verifyStatus = async (req, res) =>{ 
-    console.log("postId", req?.params.houseTrackerID)   
-    console.log("expenseId", req?.body.expenseId)   
-    try {
-      const find = await HouseTracker.findOne({_id:req.params.houseTrackerID});
-      if(find){
-        const expenseList = find.budget.map(budget=>(
-        budget.expenseList
-       )).flat();
-       const expenseItem = expenseList.find(item=> item._id.toString().includes(req?.body.expenseId))
-      expenseItem.status = req?.body.status;
-      find.individualExpense.push({
-        creator  : req?.body.creator,
-        username : req?.body.username,
-        email    : req?.body.email,
-        firstName: req?.body.firstName,
-        lastName : req?.body.lastName,
-        requestor: req?.body.requestor,
-        itemId   : req?.body.itemId, 
-        detail   : req?.body.detail,
-        purpose  : req?.body.purpose,
-        amount   : req?.body.amount,
-        date     : req?.body.date,  
-      })
-      } //
-      const updated = await find.save()
-      res.status(200).json(updated)
     } catch (err) {
       res.status(400).json(err)
     }   
@@ -290,3 +237,24 @@ export async function getHouseTrackerById(req, res){
         res.status(400).json(err)
     }   
 };
+
+export const updateOutdated = async(req, res)=>{
+  // console.log("updateOutdated",req.body)
+  try{
+    const SmartTracker="674af4b8f53e4144628df1a4"
+    const foundInDb = await HouseTracker.findOne({_id: SmartTracker})
+    console.log("foundInDb", foundInDb)
+    await foundInDb.expenseList.push(req?.body)
+    await foundInDb.save()
+  //   const found = await
+  //   HouseTracker.findOneAndUpdate(
+  //     {_id: SmartTracker.toString()},
+  //     {$push : {expenseList : {$each : req?.body}}},
+  //     // { $push: { hobbies: { $each: items } } },
+  //     // {new : true, upsert: true}
+  //     {new : true}
+  // );
+  }catch(err){
+    console.log(err)
+  }
+}
