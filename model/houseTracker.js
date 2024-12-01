@@ -42,9 +42,14 @@ const houseTracker_Model = new mongoose.Schema(
                     amountRequired : { type : Number, default: 0}, 
                     amountArray    : [{ amount: {type: Number, default: 0}, date: {type:String, default: ""},}],
                     creator        : { type: String, },
+                    email        : { type: String, },
+                    firstName       : { type: String},
+                    lastName        : { type: String},
+                    username        : { type: String},
                     amountSpent    : { type: Number, default: 0 },
                     status: {type: String, default:"pending"},
                     validator    : { type: validatorSchema, },
+                    date        : { type: String, },
 
         }],
         expenseList  : [ {
@@ -53,9 +58,14 @@ const houseTracker_Model = new mongoose.Schema(
                     amountRequired : { type : Number, default: 0}, 
                     amountArray    : [{ amount: {type: Number, default: 0}, date: {type:String, default: ""},}],
                     creator        : { type: String, },
+                    email        : { type: String, },
+                    firstName       : { type: String},
+                    lastName        : { type: String},
+                    username        : { type: String},
                     amountSpent    : { type: Number, default: 0 },
                     status: {type: String, default:"pending"},
-                    validator    : { type: validatorSchema, },
+                    validator     : { type: validatorSchema, },
+                    date          : { type: String }
                     } ],
     },
     {timestamps: true}

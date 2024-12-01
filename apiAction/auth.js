@@ -16,7 +16,16 @@ const transporter = nodemailer.createTransport({
 });
 
 
-
+const userDetail=(existingUser)=>{
+  return{
+    _id       : existingUser?._id,
+    email     : existingUser?.email,
+    firstName : existingUser?.firstName,
+    lastName  : existingUser?.lastName, 
+    admin     : existingUser?.admin ,
+    group     : existingUser?.group,
+  }
+}
 const hash =(password)=> bcrypt.hash(password, 10)
 const compare =(enteredPassword, storedPassword)=> bcrypt.compare(enteredPassword, storedPassword);
 
@@ -70,14 +79,7 @@ export const login = async(req, res) =>{
      const comparePassword = await compare(req?.body.password, existingUser?.hashPassword)
      if (!comparePassword){ return res.status(400).json("You entered wrong password") }
      if(comparePassword){
-        res.status(200).json({
-         _id       : existingUser?._id,
-         email     : existingUser?.email,
-         firstName : existingUser?.firstName,
-         lastName  : existingUser?.lastName, 
-         admin     : existingUser?.admin ,
-         group     : existingUser?.group,
-       }) 
+        res.status(200).json(userDetail(existingUser)) 
       }
     } catch (err) {
         res.status(400).json(err)
@@ -93,7 +95,7 @@ export const fetchAll = async(req, res) =>{
     }   
 };
 export const fetchOne = async(req, res) =>{
-  // console.log("fetchoneReq", req?.params.userId)
+  console.log("fetchoneReq", req?.params.userId)
   try {
      const existingUser = await Auth.findOne({_id: req?.params.userId})
        res.status(200).json({
