@@ -20,7 +20,7 @@ router.get("/v1/:creator" , getHouseTrackerByGroup );
 router.get(`/find/:houseTrackerID`, getHouseTrackerById );
 router.post( "/", createHouseTracker );
 router.post( "/createGroup/:groupId", createGroup );
-router.put( `/verifyStatus/:houseTrackerID`, verifyStatus );
+router.patch( `/verifyStatus/:postId`, verifyStatus );
 // router.patch( `/reply/:idMainEquipment`, "replyEquipment" );
 router.delete( `/delete/:houseTrackerID`, deleteHouseTracker );
 router.delete( `/deleteBudget/:houseTrackerID/:budgetID`, deleteHouseTrackerBudget );

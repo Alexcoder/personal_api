@@ -52,28 +52,24 @@ export const createGroup = async(req, res)=>{
 }
 
 export const verifyStatus = async(req, res)=>{
- console.log("createHouseTrackerV1", req?.body) 
-  const  newBudget   ={
-    purpose : req?.body.purpose,
-    detail  : req?.body.detail,
-    amountRequired : req?.body.amount,
-    amountArray    : [{ amount: req?.body.amount, date: req?.body.date}],
-    creator : { 
-      id   : req?.body.creator, 
-      email: req?.body.email, 
-      firstName: req?.body.firstName,
-      lastName : req?.body.lastName,
-      username : req?.body.username,
-      date : req?.body.date,
-    },
-   validator :{ }
- }
+ console.log("verify post.id", req?.params) 
+ console.log("verify group.id", req?.body.groupId) 
+  const validator = { 
+    id   : req?.body.user?.creator, 
+    email: req?.body.user?.email, 
+    firstName: req?.body.user?.firstName,
+    lastName : req?.body.user?.lastName,
+    username : req?.body.user?.username,
+    date : req?.body.date,
+  }
   try{
-      const isExisting = await HouseTracker.findOne({_id : req?.body.groupId.toString()});
+      const isExisting = await HouseTracker.findOne({_id : req?.params.postId});
       if(isExisting){
-        isExisting.budget.push(newBudget)
-        const updated = await isExisting.save()
-        return res.status(200).json(updated)
+       const foundExpense = isExisting?.expenseList.find(expense=> expense?._id.toString()===req?.body.expenseId)
+          foundExpense.status=req?.body.status
+          foundExpense.validator=validator
+        const verified = await isExisting.save()
+        return res.status(200).json(verified)
       }else{
         return res.status(200).json("group not found")
       }
@@ -100,27 +96,8 @@ export const createHouseTracker = async(req, res) =>{
 };
 
 export const createHouseTrackerExpense = async(req, res) =>{
-  console.log("createTrackerExpense" , req?.body ? "arrived" : "")
-  const newHouseTrackerReport = {
-    familyName : "",
-    month  : req?.body.month,
-    year  : req?.body.year,
-    creator    : req?.body.creator,  
-    expenseList  : [ {
-                   purpose         : req?.body.purpose,
-                   detail          : req?.body.detail,
-                   amountRequired  : req?.body.amountRequired, 
-                   creator         : req?.body.creator,
-                   firstName       : req?.body.firstName,
-                   lastName        : req?.body.lastName,
-                   email           : req?.body.email, 
-                   username        : req?.body.username, 
-     
-                   date: req?.body.date,
-    } ],
-  };
+  // console.log("createTrackerExpense" , req?.body ? "arrived" : "")
   const updateDetail={
-    expenseList  : [ {
       purpose         : req?.body.purpose,
       detail          : req?.body.detail,
       amountRequired  : req?.body.amountRequired, 
@@ -130,25 +107,16 @@ export const createHouseTrackerExpense = async(req, res) =>{
       email           : req?.body.email, 
       username        : req?.body.username || "",
       date: req?.body.date,
-     } ],
-    amountSpent     : [ ],
-  };
+      amountSpent     : 0,
+     } 
 
   try {
-      //  const existing = await HouseTracker.findOne({ _id: "673d980b6501517ffb7b4257" });
-       const existing = await HouseTracker.findOne({ _id: req?.body.groupId.toString() });
-       if(!existing){
-          const createNew = await new HouseTracker(newHouseTrackerReport).save()
-          res.status(200).json(createNew)
+       const existing = await HouseTracker.findOne({ _id: req?.body.groupId });
+       if(existing){
+           existing.expenseList.push(updateDetail)
+           await existing.save()
+          res.status(200).json(existing)
           }
-          else{
-         const updated = await HouseTracker.updateOne(
-           { month: req?.body.month},
-           { $push : {budget: updateDetail}, },
-            {new:true} 
-          )
-           res.status(200).json(updated); 
-       }
     } catch(err){
         res.status(400).json(err)
     }   
@@ -201,7 +169,6 @@ export async function getHouseTrackerById(req, res){
   };
 
 
-  
   export const getHouseTrackerByCategory = async(req, res)=>{    
     const searchQuery = new RegExp(req.body.category, "i")
     try {
@@ -229,7 +196,7 @@ export async function getHouseTrackerById(req, res){
     try {
        const updated = await HouseTracker.updateOne(
           {_id : postId},
-          { $pull : { budget:{_id: budgetId}} },
+          { $pull : { expenseList:{_id: budgetId}} },
           {new: true}
         );
         res.status(200).json(updated)
