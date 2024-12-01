@@ -7,7 +7,7 @@ import {
      createHouseTrackerExpense,
      createGroup,
      verifyStatus,
-     getHouseTracker,
+     getHouseTrackerByGroup,
      getAllHouseTracker,
 
      updateOutdated,
@@ -16,7 +16,7 @@ import {
 const router = express.Router();
 
 router.get("/" , getAllHouseTracker );
-router.get("/v1/:creator" , getHouseTracker );
+router.get("/v1/:creator" , getHouseTrackerByGroup );
 router.get(`/find/:houseTrackerID`, getHouseTrackerById );
 router.post( "/", createHouseTracker );
 router.post( "/createGroup/:groupId", createGroup );

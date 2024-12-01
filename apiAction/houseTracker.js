@@ -154,7 +154,7 @@ export const createHouseTrackerExpense = async(req, res) =>{
     }   
 };
 
-export const getHouseTracker = async(req, res) =>{
+export const getHouseTrackerByGroup = async(req, res) =>{
    try{
         const allGroups = await HouseTracker.find()
         const user = await Auth.findOne({_id: req?.params.creator})
