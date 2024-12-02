@@ -205,22 +205,17 @@ export async function getHouseTrackerById(req, res){
     }   
 };
 
-export const updateOutdated = async(req, res)=>{
+export const updateExpenseList = async(req, res)=>{
   // console.log("updateOutdated",req.body)
   try{
-    const SmartTracker="674af4b8f53e4144628df1a4"
-    const foundInDb = await HouseTracker.findOne({_id: SmartTracker})
-    console.log("foundInDb", foundInDb)
-    await foundInDb.expenseList.push(req?.body)
-    await foundInDb.save()
-  //   const found = await
-  //   HouseTracker.findOneAndUpdate(
-  //     {_id: SmartTracker.toString()},
-  //     {$push : {expenseList : {$each : req?.body}}},
-  //     // { $push: { hobbies: { $each: items } } },
-  //     // {new : true, upsert: true}
-  //     {new : true}
-  // );
+    const group = await HouseTracker.findOne({_id: req?.params.groupId})
+    if(group){
+      const expenseItem = group.expenseList.find(expenseItem=> expenseItem?._id.toString()===req?.body.expenseId)
+      expenseItem.amountRequired = req?.body.amountRequired
+      expenseItem.detail         = req?.body.detail? req?.body.detail : expenseItem.detail
+      await group.save()
+      return res.status().json(group)
+    }  
   }catch(err){
     console.log(err)
   }

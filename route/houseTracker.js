@@ -10,7 +10,7 @@ import {
      getHouseTrackerByGroup,
      getAllHouseTracker,
 
-     updateOutdated,
+     updateExpenseList,
     } from "../apiAction/houseTracker.js";
 
 const router = express.Router();
@@ -27,5 +27,5 @@ router.delete( `/deleteBudget/:houseTrackerID/:budgetID`, deleteHouseTrackerBudg
 
 router.post( "/createRequest", createHouseTrackerExpense );
 
-router.put( "/updateOutdated", updateOutdated );
+router.put( "/updateExpenseList/:groupId", updateExpenseList );
 export default router;
