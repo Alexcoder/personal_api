@@ -210,11 +210,11 @@ export const updateExpenseList = async(req, res)=>{
   try{
     const group = await HouseTracker.findOne({_id: req?.params.groupId})
     if(group){
-      const expenseItem = group.expenseList.find(expenseItem=> expenseItem?._id.toString()===req?.body.expenseId)
+      const expenseItem = group?.expenseList.find(expenseItem=> expenseItem?._id.toString()===req?.body?.expenseId)
       expenseItem.amountRequired = req?.body.amountRequired
-      expenseItem.detail         = req?.body.detail? req?.body.detail : expenseItem.detail
-      await group.save()
-      return res.status().json(group)
+      // expenseItem.detail         = req?.body.detail? req?.body.detail : expenseItem.detail
+     const updated = await group.save()
+      return res.status(200).json(updated)
     }  
   }catch(err){
     console.log(err)
